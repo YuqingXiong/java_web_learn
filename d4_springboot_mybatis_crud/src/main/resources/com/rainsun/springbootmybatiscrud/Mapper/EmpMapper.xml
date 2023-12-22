@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rainsun.springbootmybatiscrud.Mapper.EmpMapper">
+    <sql id="commonSelect">
+        select id, username, password, name, gender, image, job,
+               entrydate, dept_id, create_time, update_time from emp
+    </sql>
+    <select id="selectEmpList" resultType="com.rainsun.springbootmybatiscrud.pojo.Emp">
+        <!--动态sql，使用 if 标签-->
+        <!--select * from emp-->
+            <include refid="commonSelect"/>
+            <where>    <!--动态生成where 并 用于自动删除无元素的 and 或者 or-->
+            <if test="name != null">
+                name like concat('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="begin != null and end != null">
+                and entrydate between #{begin} and #{end}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <update id="updateEmp">
+        update emp
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="job != null">
+                job=#{job},
+            </if>
+            <if test="entrydate != null">
+                entrydate=#{entrydate},
+            </if>
+            <if test="deptId != null">
+                dept_id=#{deptId},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    
+    <delete id="deleteEmpList">
+        delete from emp where id in
+                        <foreach collection="idList" item="id" separator="," open="(" close=")">
+                            #{id}
+                        </foreach>
+    </delete>
+
+</mapper>

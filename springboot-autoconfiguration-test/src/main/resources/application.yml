@@ -1,0 +1,7 @@
+#自定义的阿里云OSS配置信息
+aliyun:
+  oss:
+    endpoint=https://oss-cn-qingdao.aliyuncs.com
+    accessKeyId=LTAI5tHFXTmuMjYh4NQ1mFHN
+    accessKeySecret=A9MOLk89EOg6yzVzNvN1MByhjPUODZ
+    bucketName=xiongyuqing-javaweb
